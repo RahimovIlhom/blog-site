@@ -45,6 +45,8 @@ class Blog(models.Model):
     slug = models.SlugField(max_length=50, verbose_name="Manzil")
     created_time = models.DateTimeField(auto_now_add=True)
 
+    objects = models.Manager()
+
     def __str__(self):
         return f"{self.author}: {self.title}"
 
@@ -57,7 +59,7 @@ class Blog(models.Model):
 
 class Comment(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='comments')
     body = models.TextField()
     created_time = models.DateTimeField(auto_now_add=True)
 
