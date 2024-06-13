@@ -1,5 +1,7 @@
 from django.db import models
 from django.core.validators import FileExtensionValidator
+from django.urls import reverse
+from django.utils.text import slugify
 
 from users.models import CustomUser
 
@@ -50,6 +52,16 @@ class Blog(models.Model):
     def __str__(self):
         return f"{self.author}: {self.title}"
 
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        self.slug = slugify(self.title)
+        super(Blog, self).save(force_insert, force_update, using, update_fields)
+
+    def get_absolute_url(self):
+        return reverse('detail', args=[self.pk])
+
+
     class Meta:
         db_table = 'blogs'
         ordering = ['-created_time']
@@ -86,3 +98,19 @@ class Like(models.Model):
         ordering = ['-created_time']
         verbose_name = 'Layk'
         verbose_name_plural = 'Layklar'
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255)
+    subject = models.CharField(max_length=255)
+    message = models.TextField()
+    created_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.subject}"
+
+    class Meta:
+        ordering = ['-created_time']
+        verbose_name = 'Xabar'
+        verbose_name_plural = 'Xabarlar'

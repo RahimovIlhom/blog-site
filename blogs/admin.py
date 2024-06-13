@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Tag, Blog, Comment, Like
+from .models import Category, Tag, Blog, Comment, Like, Contact
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -37,3 +37,4 @@ admin.site.register(Tag, TagAdmin)
 admin.site.register(Blog, BlogAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Like, LikeAdmin)
+admin.site.register(Contact)

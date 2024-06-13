@@ -1,0 +1,40 @@
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Green Button */
+.button-green {
+    background-color: #28a745;
+}
+
+.button-green:hover {
+    background-color: #218838;
+}
+
+.button-green:active {
+    background-color: #1e7e34;
+}
+
+/* Red Button */
+.button-red {
+    background-color: #dc3545;
+}
+
+.button-red:hover {
+    background-color: #c82333;
+}
+
+.button-red:active {
+    background-color: #bd2130;
+}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block head_extra %}
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+{% endblock head_extra %}
+
+{% block content %}
+
+<h3>{{ blog.title }}</h3>
+<p>Bu blogni rostdan ham o'chirmoqchimisiz?</p>
+
+<form method="post" action="">
+    {% csrf_token %}
+    {{ form }}
+    <a href="{% url 'detail' blog.pk %}" class="button button-green">Yo'q</a>
+    <button type="submit" class="button button-red">Ha</button>
+</form>
+
+{% endblock content %}

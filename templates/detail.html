@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+
 <div class="row tm-row">
     <div class="col-12">
         <hr class="tm-hr-primary tm-mb-55">
@@ -21,11 +22,13 @@
                     <div class="tm-post-full">                    
                         <div class="mb-4">
                             <h2 class="pt-2 tm-color-primary tm-post-title">{{ blog.title }}</h2>
-                            <p class="tm-mb-40">{{ blog.created_time }} {{ blog.author.username }}</p>
+                            <p class="tm-mb-40">{{ blog.created_time }} | {{ blog.author.username }}</p>
                             <p>
                                 {{ blog.body }}
                             </p>
-                            <span class="d-block text-right tm-color-primary">{% for tag in blog.tags.all %} {{ tag.name }}{% endfor %}</span>
+                            <a href="{% url 'edit' blog.pk %}">Tahrirlash</a> |
+                            <a href="{% url 'delete' blog.pk %}">O'chirish</a>
+                            <span class="d-block text-right tm-color-primary">{% for tag in blog.tags.all %} #{{ tag.name }}{% endfor %}</span>
                         </div>
                         
                         <!-- Comments -->
@@ -70,17 +73,14 @@
                 <aside class="col-lg-4 tm-aside-col">
                     <div class="tm-post-sidebar">
                         <hr class="mb-3 tm-hr-primary">
-                        <h2 class="mb-4 tm-post-title tm-color-primary">Categories</h2>
+                        <h2 class="mb-4 tm-post-title tm-color-primary">Bo'limlar</h2>
                         <ul class="tm-mb-75 pl-5 tm-category-list">
-                            <li><a href="#" class="tm-color-primary">Visual Designs</a></li>
-                            <li><a href="#" class="tm-color-primary">Travel Events</a></li>
-                            <li><a href="#" class="tm-color-primary">Web Development</a></li>
-                            <li><a href="#" class="tm-color-primary">Video and Audio</a></li>
-                            <li><a href="#" class="tm-color-primary">Etiam auctor ac arcu</a></li>
-                            <li><a href="#" class="tm-color-primary">Sed im justo diam</a></li>
+                            {% for category in categories %}
+                            <li><a href="#" class="tm-color-primary">{{ category.name }}</a></li>
+                            {% endfor %}
                         </ul>
                         <hr class="mb-3 tm-hr-primary">
-                        <h2 class="tm-mb-40 tm-post-title tm-color-primary">Related Posts</h2>
+                        <h2 class="tm-mb-40 tm-post-title tm-color-primary">O'xshash bloglar</h2>
                         <a href="#" class="d-block tm-mb-40">
                             <figure>
                                 <img src="img/img-02.jpg" alt="Image" class="mb-3 img-fluid">

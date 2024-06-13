@@ -1,9 +1,11 @@
+from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from blogs.models import Blog
+from blogs.models import Blog, Contact
 
 
 # functional view
@@ -24,6 +26,32 @@ def blog_detail_view(request, pk):
         return render(request, 'detail.html', context)
     except Blog.DoesNotExist:
         return HttpResponse("Bunday sahifa mavjud emas!")
+
+
+def contact_view(request):
+    if request.method == 'GET':
+        return render(request, 'contact.html')
+    elif request.method == 'POST':
+        data = request.POST
+        name = data.get('name')
+        email = data.get('email')
+        subject = data.get('subject')
+        message = data.get('message')
+        try:
+            msg = Contact.objects.create(name=name, email=email, subject=subject, message=message)
+            msg.save()
+            messages.success(request, "Xabaringiz yuborildi!")
+            messages.add_message(request, messages.INFO, "Hushyor bo'lavering")
+        except Exception as err:
+            messages.error(request, err)
+        return render(request, 'contact.html')
+
+
+def about_view(request):
+    if request.method == 'GET':
+        return render(request, 'about.html')
+
+# -----------------------------------------------------------------------
 
 
 # class based view
@@ -50,6 +78,8 @@ class BlogDetailView(View):
         except Blog.DoesNotExist:
             return HttpResponse("Bunday sahifa mavjud emas!")
 
+# ============================================================================
+
 
 # generic views: CreateView, UpdateView, DetailView, DeleteView, ListView
 class HomePageGenericView(ListView):
@@ -62,3 +92,21 @@ class BlogDetailGenericView(DetailView):
     model = Blog
     template_name = 'detail.html'
     context_object_name = 'blog'
+
+
+class BlogCreateGenericView(CreateView):
+    model = Blog
+    template_name = 'create.html'
+    fields = ['author', 'title', 'body', 'photo', 'video', 'category', 'tags', ]
+
+
+class BlogUpdateGenericView(UpdateView):
+    model = Blog
+    template_name = 'update.html'
+    fields = ['title', 'body', 'photo', 'video']
+
+
+class BlogDeleteGenericView(DeleteView):
+    model = Blog
+    template_name = 'delete.html'
+    success_url = reverse_lazy('home')
