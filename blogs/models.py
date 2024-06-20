@@ -61,7 +61,6 @@ class Blog(models.Model):
     def get_absolute_url(self):
         return reverse('detail', args=[self.pk])
 
-
     class Meta:
         db_table = 'blogs'
         ordering = ['-created_time']

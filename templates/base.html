@@ -8,10 +8,10 @@
 	<title>Ilhomjon Blog</title>
 	<link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}"> <!-- https://fontawesome.com/ -->
 	<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet"> <!-- https://fonts.google.com/ -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/templatemo-xtra-blog.css' %}" rel="stylesheet">
-    {% block head_extra %}
-    {% endblock head_extra %}
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
 	<header class="tm-header" id="tm-header">
@@ -41,6 +41,22 @@
                         <i class="far fa-comments"></i>
                         Bog'lanish
                     </a></li>
+                    {% if user.is_authenticated %}
+                         <li class="tm-nav-item">
+                            <form action="{% url 'logout' %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="tm-nav-link btn btn-link">
+                                    <i class="fa fa-sign-out" style="font-size:36px"></i>
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="tm-nav-item"><a href="{% url 'login' %}" class="tm-nav-link">
+                            <i class="fa fa-sign-in" style="font-size:36px"></i>
+                            Login
+                        </a></li>
+                    {% endif %}
                 </ul>
             </nav>
             <div class="tm-mb-65">
@@ -93,5 +109,6 @@
     </div>
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/templatemo-script.js' %}"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

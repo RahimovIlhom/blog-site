@@ -1,6 +1,21 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+<style>
+    .like-button {
+        font-size: 1.5rem;
+        text-decoration: none;
+    }
+    .like-button .fa-heart {
+        transition: color 0.3s;
+    }
+    .like-button:hover .fa-heart {
+        color: red;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 
 <div class="row tm-row">
@@ -18,88 +33,97 @@
     </div>
 </div>
 <div class="row tm-row">
-                <div class="col-lg-8 tm-post-col">
-                    <div class="tm-post-full">                    
-                        <div class="mb-4">
-                            <h2 class="pt-2 tm-color-primary tm-post-title">{{ blog.title }}</h2>
-                            <p class="tm-mb-40">{{ blog.created_time }} | {{ blog.author.username }}</p>
-                            <p>
-                                {{ blog.body }}
-                            </p>
-                            <a href="{% url 'edit' blog.pk %}">Tahrirlash</a> |
-                            <a href="{% url 'delete' blog.pk %}">O'chirish</a>
-                            <span class="d-block text-right tm-color-primary">{% for tag in blog.tags.all %} #{{ tag.name }}{% endfor %}</span>
-                        </div>
-                        
-                        <!-- Comments -->
-                        <div>
-                            <h2 class="tm-color-primary tm-post-title">Izohlar</h2>
-                            <hr class="tm-hr-primary tm-mb-45">
-                            {% for comment in blog.comments.all %}
-                            <div class="tm-comment tm-mb-45">
-                                <figure class="tm-comment-figure">
-                                    <img src="{% static 'img/comment-1.jpg' %}" alt="Image" class="mb-2 rounded-circle img-thumbnail">
-                                    <figcaption class="tm-color-primary text-center">{{ comment.author.username }}</figcaption>
-                                </figure>
-                                <div>
-                                    <p>
-                                        {{ comment.body }}
-                                    </p>
-                                    <div class="d-flex justify-content-between">
-                                        <span class="tm-color-primary">{{ comment.created_time }}</span>
-                                    </div>                                                 
-                                </div>                                
-                            </div>
-                            {% endfor %}
+    <div class="col-lg-8 tm-post-col">
+        <div class="tm-post-full">
+            <div class="mb-4">
+                <h2 class="pt-2 tm-color-primary tm-post-title">{{ blog.title }}</h2>
+                <p class="tm-mb-40">{{ blog.created_time }} | {{ blog.author.username }}</p>
+                <p>{{ blog.body }}</p>
+                <a href="{% url 'edit' blog.pk %}">Tahrirlash</a> |
+                <a href="{% url 'delete' blog.pk %}">O'chirish</a>
+                <span class="d-block text-right tm-color-primary">
+                    {% for tag in blog.tags.all %}
+                    #{{ tag.name }}
+                    {% endfor %}
+                </span>
+            </div>
 
-                            <form action="" class="mb-5 tm-comment-form">
-                                <h2 class="tm-color-primary tm-post-title mb-4">Your comment</h2>
-                                <div class="mb-4">
-                                    <input class="form-control" name="name" type="text">
-                                </div>
-                                <div class="mb-4">
-                                    <input class="form-control" name="email" type="text">
-                                </div>
-                                <div class="mb-4">
-                                    <textarea class="form-control" name="message" rows="6"></textarea>
-                                </div>
-                                <div class="text-right">
-                                    <button class="tm-btn tm-btn-primary tm-btn-small">Submit</button>                        
-                                </div>                                
-                            </form>                          
+            <!-- Like Button -->
+            <div class="d-flex align-items-center">
+                <a href="" class="btn btn-link like-button" style="color: {% if 0 %}red{% else %}black{% endif %};">
+                    <i class="fa fa-heart"></i> 123
+                </a>
+            </div>
+
+            <!-- Comments -->
+            <div>
+                <h2 class="tm-color-primary tm-post-title">Izohlar</h2>
+                <hr class="tm-hr-primary tm-mb-45">
+                {% for comment in blog.comments.all %}
+                <div class="tm-comment tm-mb-45">
+                    <figure class="tm-comment-figure">
+                        <img src="{% static 'img/comment-1.jpg' %}" alt="Image" class="mb-2 rounded-circle img-thumbnail">
+                        <figcaption class="tm-color-primary text-center">{{ comment.author.username }}</figcaption>
+                    </figure>
+                    <div>
+                        <p>{{ comment.body }}</p>
+                        <div class="d-flex justify-content-between">
+                            <span class="tm-color-primary">{{ comment.created_time }}</span>
                         </div>
                     </div>
                 </div>
-                <aside class="col-lg-4 tm-aside-col">
-                    <div class="tm-post-sidebar">
-                        <hr class="mb-3 tm-hr-primary">
-                        <h2 class="mb-4 tm-post-title tm-color-primary">Bo'limlar</h2>
-                        <ul class="tm-mb-75 pl-5 tm-category-list">
-                            {% for category in categories %}
-                            <li><a href="#" class="tm-color-primary">{{ category.name }}</a></li>
-                            {% endfor %}
-                        </ul>
-                        <hr class="mb-3 tm-hr-primary">
-                        <h2 class="tm-mb-40 tm-post-title tm-color-primary">O'xshash bloglar</h2>
-                        <a href="#" class="d-block tm-mb-40">
-                            <figure>
-                                <img src="img/img-02.jpg" alt="Image" class="mb-3 img-fluid">
-                                <figcaption class="tm-color-primary">Duis mollis diam nec ex viverra scelerisque a sit</figcaption>
-                            </figure>
-                        </a>
-                        <a href="#" class="d-block tm-mb-40">
-                            <figure>
-                                <img src="img/img-05.jpg" alt="Image" class="mb-3 img-fluid">
-                                <figcaption class="tm-color-primary">Integer quis lectus eget justo ullamcorper ullamcorper</figcaption>
-                            </figure>
-                        </a>
-                        <a href="#" class="d-block tm-mb-40">
-                            <figure>
-                                <img src="img/img-06.jpg" alt="Image" class="mb-3 img-fluid">
-                                <figcaption class="tm-color-primary">Nam lobortis nunc sed faucibus commodo</figcaption>
-                            </figure>
-                        </a>
-                    </div>                    
-                </aside>
+                {% endfor %}
+
+                <form action="" class="mb-5 tm-comment-form">
+                    <h2 class="tm-color-primary tm-post-title mb-4">Your comment</h2>
+                    <div class="mb-4">
+                        <input class="form-control" name="name" type="text">
+                    </div>
+                    <div class="mb-4">
+                        <input class="form-control" name="email" type="text">
+                    </div>
+                    <div class="mb-4">
+                        <textarea class="form-control" name="message" rows="6"></textarea>
+                    </div>
+                    <div class="text-right">
+                        <button class="tm-btn tm-btn-primary tm-btn-small">Submit</button>
+                    </div>
+                </form>
             </div>
+        </div>
+    </div>
+    <aside class="col-lg-4 tm-aside-col">
+        <div class="tm-post-sidebar">
+            <hr class="mb-3 tm-hr-primary">
+            <h2 class="mb-4 tm-post-title tm-color-primary">Bo'limlar</h2>
+            <ul class="tm-mb-75 pl-5 tm-category-list">
+                {% for category in categories %}
+                <li><a href="#" class="tm-color-primary">{{ category.name }}</a></li>
+                {% endfor %}
+            </ul>
+            <hr class="mb-3 tm-hr-primary">
+            <h2 class="tm-mb-40 tm-post-title tm-color-primary">O'xshash bloglar</h2>
+            <a href="#" class="d-block tm-mb-40">
+                <figure>
+                    <img src="img/img-02.jpg" alt="Image" class="mb-3 img-fluid">
+                    <figcaption class="tm-color-primary">Duis mollis diam nec ex viverra scelerisque a sit</figcaption>
+                </figure>
+            </a>
+            <a href="#" class="d-block tm-mb-40">
+                <figure>
+                    <img src="img/img-05.jpg" alt="Image" class="mb-3 img-fluid">
+                    <figcaption class="tm-color-primary">Integer quis lectus eget justo ullamcorper ullamcorper</figcaption>
+                </figure>
+            </a>
+            <a href="#" class="d-block tm-mb-40">
+                <figure>
+                    <img src="img/img-06.jpg" alt="Image" class="mb-3 img-fluid">
+                    <figcaption class="tm-color-primary">Nam lobortis nunc sed faucibus commodo</figcaption>
+                </figure>
+            </a>
+        </div>
+    </aside>
+</div>
 {% endblock content %}
+
+{% block extra_js %}{% endblock extra_js %}
