@@ -13,7 +13,9 @@
     .like-button:hover .fa-heart {
         color: red;
     }
+
 </style>
+<link rel="stylesheet" href="{% static 'css/comment_button.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -55,6 +57,41 @@
                 </a>
             </div>
 
+            <div class="container">
+              <a class="button" href="#" style="--color:#1e9bff; width: 200px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                Izoh qoldirish
+              </a>
+            </div>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Izoh qoldirish</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                      <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Sizning izohingiz:</label>
+                        <textarea class="form-control" id="message-text" name="{{ comment_form.body.name }}"></textarea>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                        <button type="submit" class="btn btn-primary">Yuborish</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+
             <!-- Comments -->
             <div>
                 <h2 class="tm-color-primary tm-post-title">Izohlar</h2>
@@ -74,21 +111,6 @@
                 </div>
                 {% endfor %}
 
-                <form action="" class="mb-5 tm-comment-form">
-                    <h2 class="tm-color-primary tm-post-title mb-4">Your comment</h2>
-                    <div class="mb-4">
-                        <input class="form-control" name="name" type="text">
-                    </div>
-                    <div class="mb-4">
-                        <input class="form-control" name="email" type="text">
-                    </div>
-                    <div class="mb-4">
-                        <textarea class="form-control" name="message" rows="6"></textarea>
-                    </div>
-                    <div class="text-right">
-                        <button class="tm-btn tm-btn-primary tm-btn-small">Submit</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>

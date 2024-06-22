@@ -1,10 +1,12 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+from blogs.forms import CommentCreateForm
 from blogs.models import Blog, Contact
 
 
@@ -92,6 +94,26 @@ class BlogDetailGenericView(DetailView):
     model = Blog
     template_name = 'detail.html'
     context_object_name = 'blog'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'comment_form': CommentCreateForm()
+        })
+        return context
+
+    def post(self, request, *args, **kwargs):
+        blog = self.get_object()
+        author = request.user
+        if not author.is_authenticated:
+            return redirect('login')
+        data = request.POST
+        form = CommentCreateForm(data)
+        if form.is_valid():
+            form.instance.blog = blog
+            form.instance.author = author
+            form.save()
+            return redirect(request.META.get('HTTP_REFERER'))
 
 
 class BlogCreateGenericView(CreateView):
