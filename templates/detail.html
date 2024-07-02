@@ -41,8 +41,8 @@
                 <h2 class="pt-2 tm-color-primary tm-post-title">{{ blog.title }}</h2>
                 <p class="tm-mb-40">{{ blog.created_time }} | {{ blog.author.username }}</p>
                 <p>{{ blog.body }}</p>
-                <a href="{% url 'edit' blog.pk %}">Tahrirlash</a> |
-                <a href="{% url 'delete' blog.pk %}">O'chirish</a>
+                <a href="{% url 'edit' blog.slug %}">Tahrirlash</a> |
+                <a href="{% url 'delete' blog.slug %}">O'chirish</a>
                 <span class="d-block text-right tm-color-primary">
                     {% for tag in blog.tags.all %}
                     #{{ tag.name }}

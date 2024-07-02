@@ -1,3 +1,5 @@
+from random import randint
+
 from django.db import models
 from django.core.validators import FileExtensionValidator
 from django.urls import reverse
@@ -55,11 +57,15 @@ class Blog(models.Model):
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
-        self.slug = slugify(self.title)
+        slug = slugify(self.title)
+        while Blog.objects.filter(slug=slug).exists():
+            slug = f"{slug}-{randint(0, 100)}"
+
+        self.slug = slug
         super(Blog, self).save(force_insert, force_update, using, update_fields)
 
     def get_absolute_url(self):
-        return reverse('detail', args=[self.pk])
+        return reverse('detail', args=[self.slug])
 
     class Meta:
         db_table = 'blogs'
